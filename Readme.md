@@ -35,7 +35,7 @@ npm install koa
 
 ## 2·编写最基础的app
 
-创建`src/main.js`
+创建`src/app.js`
 
 ![image-20220327214616943](C:/Users/%E7%82%B8%E6%AF%9B%E5%B0%8F%E7%84%A6/AppData/Roaming/Typora/typora-user-images/image-20220327214616943.png)
 
@@ -83,6 +83,103 @@ const dotenv = require('dotenv');
 
 dotenv.config()
 
+// console.log(process.env.APP_PORT)
+
 module.exports = process.env
+```
+
+改写`app.js`
+
+
+
+# 四·添加路由
+
+路由：根据不同的URL，掉哟个对应处理函数
+
+## 1· 安装koa-router
+
+``` 
+npm install koa-router
+```
+
+步骤：
+
+1. 导入包
+2. 实例化对象
+3. 编写路由
+4. 注册中间件
+
+## 2·编写路由
+
+创建`src/router/route.users.js`
+
+``` javascript
+const Router = require('koa-router')
+
+const router = new Router({ prefix: '/users' })
+
+router.get('/', (ctx, next) => {
+  ctx.body = 'hello users'
+})
+
+
+module.exports = router
+```
+
+# 五·目录结构优化
+
+## 1·将http服务和app业务拆分
+
+创建`src/app/index.js`
+
+``` javascript
+const Koa = require('koa')
+
+const app = new Koa()
+
+const router = require('../router/user.route')
+
+app.use(router.routes())
+
+module.exports = app
+```
+
+改写`main.js`
+
+``` js
+const { APP_PORT } = require('./config/config.default')
+
+const app = require('./app')
+
+
+app.listen(APP_PORT, () => {
+  console.log(`起飞咯 http://localhost:${APP_PORT}`);
+})
+```
+
+
+
+## 2将路由和控制器拆分
+
+路由：解析URL，分布给控制器对应的方法
+
+控制器：处理不同的业务
+
+改写`user.route.js`
+
+``` js
+const Router = require('koa-router')
+
+const { register, login } = require('../controller/user.controller')
+
+const router = new Router({ prefix: '/users' })
+
+// 注册接口
+router.post('/register', register)
+
+// 登录接口
+router.post('/login', login)
+
+module.exports = router
 ```
 
