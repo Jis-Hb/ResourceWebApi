@@ -183,3 +183,49 @@ router.post('/login', login)
 module.exports = router
 ```
 
+创建`controller/user.controller.js`
+
+``` js
+class UserController {
+  async register(ctx, next) {
+    ctx.body = '用户注册成功'
+  }
+  async login(ctx, next) {
+    ctx.body = '登录成功'
+  }
+}
+module.exports = new UserController()
+```
+
+# 六·解析body
+
+## 1·安装koa-body
+
+`npm i koa-body`
+
+##  2·注册中间件
+
+改写`app/index.js`
+
+## 3·解析请求的数据
+
+改写`user.controller.js`文件
+
+``` js
+const { CreateUser } = require('../service/user.service')
+
+class UserController {
+  async register(ctx, next) {
+    console.log(ctx.request.body);
+    const { user_name, password } = ctx.request.body
+    const res = await CreateUser(user_name, password)
+    console.log(res);
+    ctx.body = ctx.request.body
+  }
+  async login(ctx, next) {
+    ctx.body = '登录成功'
+  }
+}
+module.exports = new UserController()
+```
+
