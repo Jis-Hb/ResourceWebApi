@@ -229,3 +229,39 @@ class UserController {
 module.exports = new UserController()
 ```
 
+## 4·拆分service层
+
+service层主要是做数据库处理
+
+创建`src/service/user.service`
+
+``` js
+class UserService {
+  async CreateUser(user_name, password) {
+    // todo : 写入数据库
+    return '写入数据库成功'
+  }
+}
+module.exports = new UserService()
+
+```
+
+# 七·数据库操作
+
+sequelize ORM数据库工具
+
+ORM：对象关系映射
+
++ 数据表映射(对应)一个对象
++ 数据表中的数据行(记录)对应一个对象
++ 数据表字段对应对象的属性
++ 数据表的操作对应对象的方法
+
+## 1·安装sequelize
+
+``` 
+npm install sequelize
+```
+
+## 2·安装mysql2
+
